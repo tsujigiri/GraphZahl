@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <title>Graph</title>
+  </head>
+  <body>
+    <canvas id="graph" width="600" height="400" style="background-color: #222222;"></canvas>
+  </body>
+  <script type="text/javascript" charset="utf-8">
+    function draw_graph(data, options) {
+
+      data = data.sort(function(a,b) a[0] - b[0]);
+      data_length = data.length;
+
+      var xs = [];
+      var ys = [];
+      for(var i = 0; i < data_length; i++) {
+        xs.push(data[i][0]);
+        ys.push(data[i][1]);
+      }
+      var x_max = xs.max();
+      var x_min = xs.min();
+      var y_max = ys.max();
+      var y_min = ys.min();
+ 
+      var graph = document.getElementById("graph");
+      var context = graph.getContext('2d');
+      var graph_width = graph.getAttribute('width');
+      var graph_height = graph.getAttribute('height');
+ 
+      x_span = x_max - x_min;
+      y_span = y_max - y_min;
+ 
+      context.strokeStyle = '#eeeeee';
+ 
+      context.beginPath();  
+      context.moveTo(xs.shift, ys.shift);
+ 
+      for(var i = 0; i < data_length; i++) {
+        var x = ((xs[i] - x_min) * graph_width) / x_span;
+        var y = ((ys[i] - y_min) * graph_height) / y_span;
+        context.lineTo(x, y);
+      }
+ 
+      context.stroke(); 
+    }
+ 
+    Array.prototype.max = function () {
+      return Math.max.apply(Math, this);
+    };
+ 
+    Array.prototype.min = function () {
+      return Math.min.apply(Math, this);
+    };
+ 
+    var test_data = [];
+    for(var i = 0; i < 100; i++) {
+      test_data.push([Math.random(), Math.random()]);
+    }
+
+    console.log(test_data);
+
+    draw_graph(test_data);
+  </script>
+</html>
