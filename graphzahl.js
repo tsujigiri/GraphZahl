@@ -1,5 +1,10 @@
 function drawGraph(graph) {
 
+  var canvas = document.getElementById(graph.id);
+  var context = canvas.getContext('2d');
+  var canvas_width = canvas.getAttribute('width');
+  var canvas_height = canvas.getAttribute('height');
+
   var data = graph.data.sort(function(a,b) a[0] - b[0]);
   var data_length = graph.data.length;
 
@@ -14,23 +19,25 @@ function drawGraph(graph) {
   var y_max = ys.max();
   var y_min = ys.min();
 
-  var canvas = document.getElementById(graph.id);
-  var context = canvas.getContext('2d');
-  var canvas_width = canvas.getAttribute('width');
-  var canvas_height = canvas.getAttribute('height');
-
   x_span = x_max - x_min;
   y_span = y_max - y_min;
 
-  context.strokeStyle = graph.color;
+  context.strokeStyle = graph.line_color;
+  context.fillStyle = graph.fill_color;
 
   context.beginPath();  
   context.moveTo(xs.shift, ys.shift);
 
   for(var i = 0; i < data_length; i++) {
-    var x = ((xs[i] - x_min) * canvas_width) / x_span;
+    var x = canvas_width - ((xs[i] - x_min) * canvas_width) / x_span;
     var y = ((ys[i] - y_min) * canvas_height) / y_span;
     context.lineTo(x, y);
+  }
+
+  if(graph.fill_color) {
+    context.lineTo(0, canvas_height);
+    context.lineTo(canvas_width, canvas_height);
+    context.fill();
   }
   context.stroke();
 }
