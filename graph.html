@@ -7,10 +7,16 @@
     <canvas id="graph" width="600" height="400" style="background-color: #444444;"></canvas>
   </body>
   <script type="text/javascript" charset="utf-8">
-    var test_graph = { id: 'graph', data: [], line_color: '00ff00', fill_color: '#333333' };
+    var graph_data =
+      {
+        id: 'graph',
+        graphs: [{ data: [], line_color: '#00ff00', fill_color: '#335533' },
+                 { data: [], line_color: 'yellow' }]
+      };
     for(var i = 0; i < 100; i++) {
-      test_graph.data.push([i, Math.sin(i/17) * Math.sin(i/5)]);
+      graph_data.graphs[0].data.push([i, Math.sin(i/17) * Math.sin(i/5)]);
+      graph_data.graphs[1].data.push([i, Math.sin(i/18) * Math.sin(i/4)]);
     }
-    drawGraph(test_graph);
+    drawGraph(graph_data);
   </script>
 </html>
