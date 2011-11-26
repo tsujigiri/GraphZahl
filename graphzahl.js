@@ -52,3 +52,42 @@ Array.prototype.min = function () {
   return Math.min.apply(Math, this);
 };
 
+function stack(graphs) {
+  var upper_graph, lower_graph, x, y, k;
+  var stacked_graphs = [graphs[0]];
+
+  for(var i = 1; i < graphs.length; i++) {
+    upper_graph = graphs[i].data;
+    lower_graph = graphs[i-1].data;
+    stacked_graphs.push(graphs[i]);
+    stacked_graphs[stacked_graphs.length-1].data = [];
+    for(var j = 0; j < upper_graph.length; j++) {
+      x = upper_graph[j][0];
+      k = 0;
+      while(true) {
+        if(lower_graph.length <= j+k+1) {
+          y = lower_graph[j][1] + upper_graph[j][1];
+	  break;
+	} else if(j+k < 0) {
+	  y = lower_graph[j+k+1][1] + upper_graph[j][1];
+	  break;
+        } else {
+	  if(x >= lower_graph[j+k][0]) {
+            if(x <= lower_graph[j+k+1][0]) {
+              lower_graph[j+k+1] - lower_graph[j+k];
+              y = (lower_graph[j+k+1][1] - lower_graph[j+k][1]) * x / (lower_graph[j+k+1][1] - lower_graph[j+k][1]); // + upper_graph[j][1];
+              break;
+            } else {
+              k++;
+            }
+          } else {
+            k--;
+          }
+	}
+      }
+      stacked_graphs[i].data.push([x, y]);
+    }
+  }
+  return stacked_graphs;
+}
+
