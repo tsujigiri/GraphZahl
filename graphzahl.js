@@ -1,51 +1,74 @@
 function drawGraph(graph_data) {
 
+  var x = 0;
+  var y = 1;
+
   var canvas = document.getElementById(graph_data.id);
   var context = canvas.getContext('2d');
   var canvas_width = canvas.getAttribute('width');
   var canvas_height = canvas.getAttribute('height');
 
+  if(graph_data.stack == true)
+    graph_data.graphs = stack(graph_data.graphs);
+
+  var x_max, x_min, y_max, y_min, tmp, data, data_length, xs, ys, x0, y0;
+
+  // find the min and max values for the graph dimensions
+  for(var i = 0; i < graph_data.graphs.length; i++) {
+    data = graph_data.graphs[i].data.sort(function(a,b) a[0] - b[0]);
+    tmp = data[data.length-1][x];
+    if(x_max == undefined || x_max < tmp)
+      x_max = tmp;
+    tmp = data[0][x];
+    if(x_min == undefined || x_min > tmp)
+      x_min = tmp;
+    tmp = data.map(function(e) { return e[y] }).max();
+    if(y_max == undefined || y_max < tmp)
+      y_max = tmp;
+    tmp = data.map(function(e) { return e[y] }).min();
+    if(y_min == undefined || y_min > tmp)
+      y_min = tmp;
+  }
+
+  var x_span = x_max - x_min;
+  var y_span = y_max - y_min;
+
+  // draw the graphs
   for(var j = 0; j < graph_data.graphs.length; j++) {
 
-    var data = graph_data.graphs[j].data.sort(function(a,b) a[0] - b[0]);
+    data = graph_data.graphs[j].data;
+    data_length = data.length;
 
-    if(graph_data.stack == true)
-      graph_data.graphs = stack(graph_data.graphs);
-
-
-    var data_length = data.length;
-
-    var xs = [];
-    var ys = [];
+    xs = [];
+    ys = [];
     for(var i = 0; i < data_length; i++) {
-      xs.push(data[i][0]);
-      ys.push(data[i][1]);
+      xs.push(data[i][x]);
+      ys.push(data[i][y]);
     }
-    var x_max = xs.max();
-    var x_min = xs.min();
-    var y_max = ys.max();
-    var y_min = ys.min();
-
-    x_span = x_max - x_min;
-    y_span = y_max - y_min;
 
     context.beginPath();
-    context.moveTo(xs.shift, ys.shift);
-
     for(var i = 0; i < data_length; i++) {
-      var x = canvas_width - ((xs[i] - x_min) * canvas_width) / x_span;
-      var y = ((ys[i] - y_min) * canvas_height) / y_span;
-      context.lineTo(x, y);
+      x0 = ((xs[i] - x_min) * canvas_width) / x_span;
+      y0 = canvas_height - ((ys[i] - y_min) * canvas_height) / y_span;
+      if(i == 0) {
+	context.moveTo(x0,y0);
+	var start_x = x0;
+      } else {
+        context.lineTo(x0, y0);
+      }
     }
 
-    if(graph_data.graphs[j].fill_color) {
-      context.lineTo(0, canvas_height);
-      context.lineTo(canvas_width, canvas_height);
-      context.fillStyle = graph_data.graphs[j].fill_color;
-      context.fill();
-    }
     context.strokeStyle = graph_data.graphs[j].line_color;
     context.stroke();
+
+    if(graph_data.graphs[j].fill_color) {
+      context.lineTo(x0, canvas_height);
+      context.lineTo(start_x, canvas_height);
+      context.fillStyle = graph_data.graphs[j].fill_color;
+      context.fill();
+      context.strokeStyle = graph_data.graphs[j].fill_color;
+      context.stroke();
+    }
   }
 }
 

@@ -10,14 +10,16 @@
     var graph_data =
       {
         id: 'graph',
-       // stack: true,
-        graphs: [{ data: [], line_color: '#00ff00', fill_color: '#335533' },
-                 { data: [], line_color: 'yellow' }]
+        //stack: true,
+        graphs: [{ data: [[1,2],[2,4],[3,3]], line_color: '#00ff00', fill_color: '#000000' },
+                 { data: [[0.5,1],[1.5,3],[2,0],[3.3,1],[6,5]], line_color: 'yellow' }]
       };
+    /*
     for(var i = 0; i < 100; i++) {
       graph_data.graphs[0].data.push([i, Math.sin(i/17) * Math.sin(i/5)]);
       graph_data.graphs[1].data.push([i, Math.sin(i/18) * Math.sin(i/4)]);
     }
+    */
     drawGraph(graph_data);
   </script>
 </html>
