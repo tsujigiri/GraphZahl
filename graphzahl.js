@@ -8,6 +8,11 @@ function drawGraph(graph_data) {
   for(var j = 0; j < graph_data.graphs.length; j++) {
 
     var data = graph_data.graphs[j].data.sort(function(a,b) a[0] - b[0]);
+
+    if(graph_data.stack == true)
+      graph_data.graphs = stack(graph_data.graphs);
+
+
     var data_length = data.length;
 
     var xs = [];
@@ -65,17 +70,21 @@ function stack(graphs) {
       x = upper_graph[j][0];
       k = 0;
       while(true) {
-        if(lower_graph.length <= j+k+1) {
-          y = lower_graph[j][1] + upper_graph[j][1];
+        if(lower_graph.length <= j+k) {
+          y = lower_graph[lower_graph.length-1][1] + upper_graph[j][1];
 	  break;
 	} else if(j+k < 0) {
-	  y = lower_graph[j+k+1][1] + upper_graph[j][1];
+	  y = lower_graph[0][1] + upper_graph[j][1];
 	  break;
+	} else if(lower_graph[j+k] != undefined && x == lower_graph[j+k][0]) {
+	  y = lower_graph[j+k][1] + upper_graph[j][1];
+	  break;
+	} else if(lower_graph[j+k+1] != undefined && x == lower_graph[j+k+1][0]) {
+	  y = lower_graph[j+k+1][1] + upper_graph[j][1];
         } else {
-	  if(x >= lower_graph[j+k][0]) {
-            if(x <= lower_graph[j+k+1][0]) {
-              lower_graph[j+k+1] - lower_graph[j+k];
-              y = (lower_graph[j+k+1][1] - lower_graph[j+k][1]) * x / (lower_graph[j+k+1][1] - lower_graph[j+k][1]); // + upper_graph[j][1];
+	  if(x > lower_graph[j+k][0]) {
+            if(x < lower_graph[j+k+1][0]) {
+	      y = (x - lower_graph[j+k][0]) * (lower_graph[j+k+1][1] - lower_graph[j+k][1]) / (lower_graph[j+k+1][0] - lower_graph[j+k][0]) + lower_graph[j+k][1] + upper_graph[j][1];
               break;
             } else {
               k++;
