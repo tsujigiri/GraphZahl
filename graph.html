@@ -7,19 +7,19 @@
     <canvas id="graph" width="600" height="400" style="background-color: #444444;"></canvas>
   </body>
   <script type="text/javascript" charset="utf-8">
-    var graph_data =
-      {
-        id: 'graph',
-        //stack: true,
-        graphs: [{ data: [[1,2],[2,4],[3,3]], line_color: '#00ff00', fill_color: '#000000' },
-                 { data: [[0.5,1],[1.5,3],[2,0],[3.3,1],[6,5]], line_color: 'yellow' }]
-      };
     /*
     for(var i = 0; i < 100; i++) {
       graph_data.graphs[0].data.push([i, Math.sin(i/17) * Math.sin(i/5)]);
       graph_data.graphs[1].data.push([i, Math.sin(i/18) * Math.sin(i/4)]);
     }
     */
-    drawGraph(graph_data);
+
+    var graph_zahl = new GraphZahl('graph');
+    graph_zahl.stacked = true;
+    graph_zahl.graphs =
+      [{ data: [[1,2],[2,4],[3,3]], line_color: '#00ff00', fill_color: '#000000' },
+       { data: [[0.5,1],[1.5,3],[2,0],[3.3,1],[6,5]], line_color: 'yellow' }]
+    graph_zahl.draw();
+
   </script>
 </html>
