@@ -19,7 +19,7 @@ GraphZahl = function(id) {
     if(this.stacked == true)
       this.graphs = this.stack(this.graphs);
 
-    // sort the grap data and find the min and max values
+    // sort the graph data and find the min and max values
     for(var i = 0; i < this.graphs.length; i++) {
       if(this.graphs[i].data.length == 0)
 	continue;
@@ -67,6 +67,7 @@ GraphZahl = function(id) {
     }
   };
 
+  // draw a path
   this.drawPath = function(graph) {
     var data = graph.data;
     var data_length = data.length;
@@ -81,6 +82,7 @@ GraphZahl = function(id) {
     }
   };
 
+  // map values to canvas dimensions
   this.scale = function([x,y]) {
     return [
       ((x - this.x_min) * this.canvas_width) / this.x_span,
