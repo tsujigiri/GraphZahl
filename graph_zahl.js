@@ -6,10 +6,10 @@ GraphZahl = function(id) {
   this.context = this.canvas.getContext('2d');
   this.canvas_width = this.canvas.width;
   this.canvas_height = this.canvas.height;
-  
-
 
   this.draw = function() {
+
+    this.context.clearRect(0, 0, this.canvas_width, this.canvas_height);
   
     var tmp, x_min, x_max, y_min, y_max, data, x, y;
 
