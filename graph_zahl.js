@@ -21,6 +21,8 @@ GraphZahl = function(id) {
 
     // sort the grap data and find the min and max values
     for(var i = 0; i < this.graphs.length; i++) {
+      if(this.graphs[i].data.length == 0)
+	continue;
       data = this.graphs[i].data = this.graphs[i].data.sort(function(a,b) a[0] - b[0]);
       tmp = data[data.length-1][0];
       if(this.x_max == undefined || this.x_max < tmp)
@@ -41,7 +43,9 @@ GraphZahl = function(id) {
 
   
     // draw the graphs
-    for(var j = 0; j < this.graphs.length; j++) {
+    for(var j = this.graphs.length-1; j >= 0; j--) {
+      if(this.graphs[j].data.length == 0)
+	continue;
 
       if(this.graphs[j].fill_color) {
         this.context.beginPath();
