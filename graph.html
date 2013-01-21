@@ -4,22 +4,22 @@
     <script src="graph_zahl.js" type="text/javascript"></script>
   </head>
   <body>
-    <canvas id="graph" width="600" height="400" style="background-color: #444444;"></canvas>
+    <canvas id="graph" width="600" height="400" style="background-color: #FDF6E3;"></canvas>
   </body>
   <script type="text/javascript" charset="utf-8">
 
-    var graph_zahl = new GraphZahl('graph');
-    graph_zahl.stacked = true;
+    var diagram = new GraphZahl('graph');
+    diagram.stacked = true;
 
-    graph_zahl.graphs = [
-      {data:[], fill_color:'#343434'},
-      {data:[], fill_color:'#121212'}
-      ];
+    diagram.graphs = [
+      { data:[], fill_color:'#DC322F' },
+      { data:[], fill_color:'#2AA198' }
+    ];
     for(var i = 0; i < 100; i++) {
-      graph_zahl.graphs[0].data.push([i, Math.sin(i/17) * Math.sin(i/5) + 1]);
-      graph_zahl.graphs[1].data.push([i, Math.sin(i/18) * Math.sin(i/4) + 1]);
+      diagram.graphs[0].data.push([i, Math.sin(i/17) * Math.sin(i/5) + 1]);
+      diagram.graphs[1].data.push([i, Math.sin(i/18) * Math.sin(i/4) + 1]);
     }
-    graph_zahl.draw();
+    diagram.draw();
 
   </script>
 </html>
